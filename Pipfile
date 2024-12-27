@@ -20,3 +20,6 @@ pefile = "*"          # Needed for pyinstaller on Windows
 [packages]
 requests = "*"
 browser-cookie3 = "*"
+openai-whisper = "*"
+numpy = "<2"
+openai = "*"
