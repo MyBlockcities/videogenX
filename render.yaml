@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: instaloader
+    env: python
+    buildCommand: |
+      # Install system dependencies
+      apt-get update && apt-get install -y ffmpeg
+      # Install Python dependencies
+      pip install -r requirements.txt
+      # Build frontend
+      cd frontend && npm install && npm run build && cd ..
+    startCommand: gunicorn -w 4 -k uvicorn.workers.UvicornWorker api:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: NODE_VERSION
+        value: 18.0.0
+      - key: SUPABASE_API_KEY
+        sync: false
+      - key: INSTAGRAM_USERNAME
+        sync: false
+      - key: INSTAGRAM_PASSWORD
+        sync: false

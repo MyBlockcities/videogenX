@@ -24,20 +24,35 @@ INSTAGRAM_PASSWORD=your_instagram_password
 
 ### Local Development
 
-1. Install Python dependencies:
+1. Navigate to the project directory:
+```bash
+cd /path/to/instaloader
+```
+
+2. Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Start the server:
+3. Install and build frontend:
+```bash
+cd frontend
+npm install
+npm run build
+cd ..
+```
+
+4. Start the application:
 ```bash
 python api.py
 ```
 
-3. Open your browser and visit:
+5. Open your browser and visit:
 ```
 http://localhost:8000
 ```
+
+Note: You don't need to run the frontend separately as the FastAPI server serves the built React frontend files.
 
 ### Docker Deployment
 
@@ -51,39 +66,60 @@ docker build -t instagram-processor .
 docker run -p 8000:8000 --env-file .env instagram-processor
 ```
 
-### Cloud Deployment
+### Deployment
 
-The application can be deployed to various cloud platforms. Here are the recommended options:
+This application is configured for easy deployment to Render.com, which provides a reliable and simple deployment process for both the frontend and backend components.
 
-#### Railway.app Deployment
+#### Prerequisites
+- A GitHub account
+- A Render.com account
+- Your Supabase API key
+- Instagram credentials
 
-1. Install Railway CLI:
+#### Deployment Steps
+
+1. Push your code to GitHub:
 ```bash
-brew install railway
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin your-github-repo-url
+git push -u origin main
 ```
 
-2. Login to Railway:
-```bash
-railway login
-```
+2. Deploy to Render.com:
+   1. Go to [render.com](https://render.com) and sign up/login
+   2. Click "New +" and select "Web Service"
+   3. Connect your GitHub repository
+   4. Configure the service:
+      - Name: instaloader
+      - Environment: Python 3
+      - Build Command: (automatically set from render.yaml)
+      - Start Command: (automatically set from render.yaml)
+   5. Add environment variables:
+      - SUPABASE_API_KEY
+      - INSTAGRAM_USERNAME
+      - INSTAGRAM_PASSWORD
+   6. Click "Create Web Service"
 
-3. Initialize project:
-```bash
-railway init
-```
+The deployment process will automatically:
+- Install system dependencies (ffmpeg)
+- Install Python dependencies
+- Build the React frontend
+- Start the FastAPI server
 
-4. Deploy:
-```bash
-railway up
-```
+#### Monitoring and Troubleshooting
 
-#### Render.com Deployment
+After deployment:
+1. Monitor the build logs in Render dashboard
+2. Check the "Logs" tab for runtime issues
+3. Use the "Shell" tab to debug if needed
 
-1. Fork this repository to your GitHub account
-2. Create a new Web Service on Render
-3. Connect your GitHub repository
-4. Add environment variables in Render dashboard
-5. Deploy
+#### Updating the Application
+
+To update your deployed application:
+1. Push changes to your GitHub repository
+2. Render will automatically rebuild and deploy
 
 ## Usage
 
