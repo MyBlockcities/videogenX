@@ -3,18 +3,9 @@ services:
     name: instaloader
     env: python
     buildCommand: |
-      # Install Python dependencies
       pip install -r requirements.txt
-      
-      # Install system dependencies (using Render's pre-installed packages)
-      which ffmpeg || echo "ffmpeg is required and should be pre-installed"
-      which node || echo "node is required and should be pre-installed"
-      
-      # Build the frontend
       cd frontend && npm install && npm run build && cd ..
-    
-    startCommand: gunicorn -w 4 -k uvicorn.workers.UvicornWorker api:app
-    
+    startCommand: gunicorn -w 4 -k uvicorn.workers.UvicornWorker api:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -26,7 +17,8 @@ services:
         sync: false
       - key: INSTAGRAM_PASSWORD
         sync: false
-
+      - key: PORT
+        value: 8000  # Default port, Render will override this
     autoDeploy: true
     plan: starter
     region: ohio
