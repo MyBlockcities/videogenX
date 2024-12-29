@@ -78,6 +78,10 @@ class SearchRequest(BaseModel):
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
 
+@app.get("/healthz")
+async def health_check():
+    return {"status": "healthy"}
+
 @app.post("/api/process")
 async def process_video(request: VideoRequest):
     try:

@@ -93,14 +93,19 @@ git push -u origin main
    3. Connect your GitHub repository
    4. Configure the service:
       - Name: instaloader
-      - Environment: Python 3
-      - Build Command: (automatically set from render.yaml)
-      - Start Command: (automatically set from render.yaml)
-   5. Add environment variables:
+      - Environment: Python
+      - Region: Choose closest to your users
+      - Branch: main (or your default branch)
+      - Build Command: `curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs ffmpeg && pip install -r requirements.txt && cd frontend && npm install && npm run build && cd ..`
+      - Start Command: `gunicorn -w 4 -k uvicorn.workers.UvicornWorker api:app`
+   5. Click on "Advanced" and configure:
+      - Health Check Path: `/healthz` (optional)
+      - Auto-Deploy: Yes (recommended)
+   6. Add environment variables:
       - SUPABASE_API_KEY
       - INSTAGRAM_USERNAME
       - INSTAGRAM_PASSWORD
-   6. Click "Create Web Service"
+   7. Click "Create Web Service"
 
 The deployment process will automatically:
 - Install system dependencies (ffmpeg)
